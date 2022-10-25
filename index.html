@@ -1,0 +1,47 @@
+<html>
+<head>
+  <script defer src="https://unpkg.com/alpinejs@3.5.0/dist/cdn.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    let chartData = function () {
+      return {
+        chart: null,
+        data: {
+          labels: null,
+          datasets: null
+        },
+        fetch: function () {
+          fetch('http://127.0.0.1:8000/temperature/dataset')
+            .then(res => res.json())
+            .then(res => {
+              this.data.labels = res.months;
+              this.data.datasets = res.datasets;
+              this.renderChart();
+            })
+        },
+        renderChart: function () {
+          this.chart = new Chart(
+            document.getElementById('myChart'),
+            {
+              type: 'line',
+              data: this.data,
+              options: {
+                title: {
+                  display: true,
+                  text: 'Average daytime temperature in 2021'
+                }
+              }
+            }
+          );
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div x-data="{chartData: chartData()}" x-init="chartData.fetch()">
+    <canvas id="myChart"></canvas>
+  </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+version: "3.9"
+services:
+ graph-api:
+  image: r0781669/graph-api
+  ports:
+    - "8000:8000"
